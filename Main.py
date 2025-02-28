@@ -5,6 +5,7 @@ st.set_page_config(
     page_title="Unit Converter | Muhammad Shariq", page_icon="♾️", layout="wide",  
 )
 
+
 st.markdown("<h1 style='text-align: center; font-size: 40px; font-weight: bold; color: #FFB200'>GIAIC - Unit Converter App <i class='fa-brands fa-python'></i></h1>", unsafe_allow_html=True)
 st.divider() # for a divider to separate sections
 
@@ -12,8 +13,13 @@ st.markdown("<h2 style=' font-weight: bold; color: #1ABC9C'>Created By Muhammad 
 
 st.write("<p style=' color: gray'>Dated: 28 | 2 | 2025</p>", unsafe_allow_html=True)
 
+# Creating Columns for improved UI
+col1, col2 = st.columns(2)
+
 # Creating a drop down menu for selecting the conversion type and the option is stored in a variable named conversion_type to use later.
-conversion_type = st.selectbox("Select the Conversion Type!", ["Length", "Weight", "Temperature", "Time"])
+with col1:
+    conversion_type = st.selectbox("Select the Conversion Type!", ["Length", "Weight", "Temperature", "Time"])
+
 
 # Defining convertion values and operations to perform calculations based on the unit. def keyword is used to define a function.
 
@@ -69,11 +75,15 @@ units = {
     "Time": ["Seconds to Minutes", "Minutes to Hours", "Hours to Days", "Days to Hours"]
 }
 
-# Creating a drop down for selecting the sub unit for conversion.
-unit = st.selectbox("Choose conversion", units[conversion_type])
+with col2:
+    # Creating a drop down for selecting the sub unit for conversion.
+    unit = st.selectbox("Choose conversion", units[conversion_type])
 
-# input field for user input of value (numbers only) to convert it into desired unit.
-value = st.number_input("Enter value", min_value=0.0, format="%.2f")
+col3, col4 = st.columns(2)
+
+with col3:
+    # input field for user input of value (numbers only) to convert it into desired unit.
+    value = st.number_input("Enter value", min_value=0.0, format="%.2f")
 
 # Creating a button to process the conversion
 if st.button("Convert"):
@@ -87,6 +97,7 @@ if st.button("Convert"):
         elif conversion_type == "Time":
             result = convert_time(value, unit)
 
-        st.success(f"Converted Value: {result:.2f}") # :.2f ensures the result is 2 decimal place.
+        with col4:
+            st.success(f"Converted Value: {result:.2f}") # :.2f ensures the result is 2 decimal place.
     else:
-        st.warning("Enter a valid number greater than or 0")
+        st.warning("Enter a valid number greater than 0")
